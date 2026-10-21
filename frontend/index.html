@@ -202,7 +202,7 @@ api_recomendar(Request) :-
             document.getElementById('loader').classList.remove('hidden');
 
             // Petición HTTP directa al servidor SWI-Prolog
-            fetch(`/recomendar?area=${area}&habilidad=${habilidad}&entorno=${entorno}`)
+            fetch(`https://seov-pro-backend.onrender.com/recomendar?area=${encodeURIComponent(area)}&habilidad=${encodeURIComponent(habilidad)}&entorno=${encodeURIComponent(entorno)}`)
                 .then(res => res.json())
                 .then(data => {
                     document.getElementById('loader').classList.add('hidden');

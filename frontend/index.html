@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEOV-Pro | Sistema Experto de Orientación Vocacional</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 p-2.5 rounded-xl text-white shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid fa-brain text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-white">SEOV-Pro</h1>
+                    <p class="text-xs text-indigo-400">Sistema Experto con Motor SWI-Prolog Real</p>
+                </div>
+            </div>
+            <button onclick="openModal()" class="px-3.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition flex items-center gap-2 border border-slate-700">
+                <i class="fa-solid fa-code text-indigo-400"></i> Ver Código .pl Real
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Formulario de Consulta -->
+        <section class="lg:col-span-5 bg-slate-800/60 border border-slate-700/60 rounded-2xl p-6 backdrop-blur shadow-xl">
+            <h2 class="text-xl font-bold mb-1 flex items-center gap-2 text-white">
+                <i class="fa-solid fa-sliders text-indigo-400"></i> Perfil del Estudiante
+            </h2>
+            <p class="text-xs text-slate-400 mb-6">Selecciona los criterios requeridos para ejecutar la regla de inferencia en Prolog.</p>
+
+            <form id="vocationalForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">1. Área de Interés Principal</label>
+                    <select id="area" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                        <option value="">-- Seleccionar Área --</option>
+                        <option value="exactas">Ciencias Exactas e Ingenierías</option>
+                        <option value="salud">Ciencias de la Salud</option>
+                        <option value="sociales">Ciencias Sociales y Humanidades</option>
+                        <option value="economico_administrativas">Económico - Administrativas</option>
+                        <option value="diseno">Diseño y Arte Digital</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">2. Habilidad o Aptitud Destacada</label>
+                    <select id="habilidad" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                        <option value="">-- Seleccionar Habilidad --</option>
+                        <option value="programacion">Programación y Algoritmos</option>
+                        <option value="pensamiento_logico">Pensamiento Lógico-Matemático</option>
+                        <option value="biologia">Biología / Anatomía</option>
+                        <option value="empatia">Empatía / Atención al Paciente</option>
+                        <option value="oratoria">Oratoria / Argumentación</option>
+                        <option value="lectura_comprensiva">Lectura Comprensiva y Análisis</option>
+                        <option value="liderazgo">Liderazgo y Gestión</option>
+                        <option value="finanzas">Análisis Financiero</option>
+                        <option value="escucha_activa">Escucha Activa y Psicología</option>
+                        <option value="dibujo_tecnico">Dibujo Técnico / Espacial</option>
+                        <option value="fisica">Física Aplicada</option>
+                        <option value="creatividad">Creatividad e Ilustración</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">3. Ambiente de Trabajo Preferido</label>
+                    <select id="entorno" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition">
+                        <option value="">-- Seleccionar Entorno --</option>
+                        <option value="remoto_u_oficina">Remoto u Oficina (Computadora)</option>
+                        <option value="hospital">Hospital / Clínica</option>
+                        <option value="oficina_o_tribunal">Oficina / Juzgado / Tribunal</option>
+                        <option value="campo_y_oficina">Campo y Obra (Mixto)</option>
+                    </select>
+                </div>
+
+                <div class="pt-4 flex items-center gap-3">
+                    <button type="button" onclick="ejecutarInferenciaProlog()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Consultar SWI-Prolog
+                    </button>
+                    <button type="button" onclick="resetearConsulta()" class="bg-slate-700 hover:bg-slate-600 text-slate-300 font-medium py-2.5 px-4 rounded-xl text-sm transition">
+                        <i class="fa-solid fa-rotate-left"></i> Limpiar
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Panel de Resultados e Inferencia -->
+        <section class="lg:col-span-7 space-y-6">
+            
+            <div id="welcomeMessage" class="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-8 text-center">
+                <div class="w-16 h-16 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-indigo-400 border border-slate-700">
+                    <i class="fa-solid fa-server text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-slate-200 mb-2">Servidor SWI-Prolog Conectado</h3>
+                <p class="text-xs text-slate-400 max-w-md mx-auto">Selecciona los parámetros de la izquierda y haz clic en "Consultar SWI-Prolog". La petición viajará al servidor de Prolog nativo, resolverá las reglas lógicas y regresará los resultados por Backtracking.</p>
+            </div>
+
+            <!-- Loader -->
+            <div id="loader" class="hidden bg-slate-800/40 border border-slate-700/40 rounded-2xl p-8 text-center">
+                <i class="fa-solid fa-circle-notch fa-spin text-3xl text-indigo-500 mb-3"></i>
+                <p class="text-sm font-medium text-slate-300">Procesando consulta en SWI-Prolog...</p>
+            </div>
+
+            <!-- Resultados -->
+            <div id="resultsContainer" class="hidden space-y-4">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-base font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-diagram-project text-indigo-400"></i> Resultados de la Inferencia Lógica
+                    </h3>
+                    <span id="resultsCount" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-800"></span>
+                </div>
+
+                <!-- Lista de Carreras -->
+                <div id="cardsList" class="space-y-3"></div>
+
+                <!-- Explicación Lógica -->
+                <div id="explanationBox" class="bg-indigo-950/40 border border-indigo-800/50 rounded-2xl p-5 text-xs space-y-2">
+                    <h4 class="font-bold text-indigo-300 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-scale-balanced"></i> Justificación de Reglas Utilizadas (Explicabilidad)
+                    </h4>
+                    <p id="explanationText" class="text-slate-300 leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Sin Resultados -->
+            <div id="noResults" class="hidden bg-amber-950/30 border border-amber-800/50 rounded-2xl p-6 text-amber-200 text-xs">
+                <div class="flex items-start gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-400 text-xl mt-0.5"></i>
+                    <div>
+                        <h4 class="font-bold text-sm mb-1 text-amber-300">Datos Insuficientes o Sin Coincidencia</h4>
+                        <p class="leading-relaxed text-amber-200/80">El motor de SWI-Prolog no encontró ninguna combinación que satisfaga las reglas de inferencia para los datos seleccionados.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Modal para ver Código Prolog -->
+    <div id="prologModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl">
+            <div class="p-4 border-b border-slate-800 flex justify-between items-center">
+                <div class="flex items-center gap-2 text-indigo-400 font-bold text-sm">
+                    <i class="fa-solid fa-file-code"></i> Servidor Prolog: <code>servidor_web.pl</code>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-4 overflow-y-auto flex-1 font-mono text-xs bg-slate-950 text-emerald-400 leading-relaxed">
+<pre>
+% Servidor Web nativo escuchando en HTTP
+:- use_module(library(http/thread_httpd)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_json)).
+
+% Inferencia en SWI-Prolog
+api_recomendar(Request) :-
+    http_parameters(Request, [area(Area, []), habilidad(Hab, []), entorno(Ent, [])]),
+    findall(json([carrera=Nombre, nivel=Nivel]),
+            (evaluar_compatibilidad(Area, Hab, Ent, Id, Nivel), carrera(Id, Nombre, _)),
+            ListaSoluciones),
+    reply_json(ListaSoluciones).
+</pre>
+            </div>
+            <div class="p-3 border-t border-slate-800 text-right">
+                <button onclick="closeModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-medium">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('prologModal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('prologModal').classList.add('hidden'); }
+
+        function resetearConsulta() {
+            document.getElementById('vocationalForm').reset();
+            document.getElementById('resultsContainer').classList.add('hidden');
+            document.getElementById('noResults').classList.add('hidden');
+            document.getElementById('welcomeMessage').classList.remove('hidden');
+        }
+
+        function ejecutarInferenciaProlog() {
+            const area = document.getElementById('area').value;
+            const habilidad = document.getElementById('habilidad').value;
+            const entorno = document.getElementById('entorno').value;
+
+            if (!area || !habilidad || !entorno) {
+                alert("Por favor selecciona todos los campos.");
+                return;
+            }
+
+            document.getElementById('welcomeMessage').classList.add('hidden');
+            document.getElementById('noResults').classList.add('hidden');
+            document.getElementById('resultsContainer').classList.add('hidden');
+            document.getElementById('loader').classList.remove('hidden');
+
+            // Petición HTTP directa al servidor SWI-Prolog
+            fetch(`/recomendar?area=${area}&habilidad=${habilidad}&entorno=${entorno}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('loader').classList.add('hidden');
+
+                    if (!data || data.length === 0) {
+                        document.getElementById('noResults').classList.remove('hidden');
+                        return;
+                    }
+
+                    document.getElementById('resultsContainer').classList.remove('hidden');
+                    document.getElementById('resultsCount').textContent = `${data.length} solución(es) obtenida(s) de SWI-Prolog`;
+
+                    const listContainer = document.getElementById('cardsList');
+                    listContainer.innerHTML = '';
+
+                    data.forEach(item => {
+                        let badgeClass = "bg-emerald-950/80 text-emerald-300 border-emerald-800";
+                        let iconClass = "fa-star text-emerald-400";
+
+                        if (item.nivel.includes('Moderada')) {
+                            badgeClass = "bg-blue-950/80 text-blue-300 border-blue-800";
+                            iconClass = "fa-check text-blue-400";
+                        } else if (item.nivel.includes('Exploracion')) {
+                            badgeClass = "bg-amber-950/80 text-amber-300 border-amber-800";
+                            iconClass = "fa-compass text-amber-400";
+                        }
+
+                        listContainer.innerHTML += `
+                            <div class="bg-slate-800/80 border border-slate-700/80 rounded-xl p-4 flex items-center justify-between">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <i class="fa-solid ${iconClass}"></i>
+                                        <h4 class="font-bold text-slate-100 text-sm">${item.carrera}</h4>
+                                    </div>
+                                    <span class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded border ${badgeClass}">
+                                        ${item.nivel}
+                                    </span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs text-slate-400">Origen:</span>
+                                    <p class="font-mono text-[11px] text-indigo-300">SWI-Prolog JSON</p>
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    document.getElementById('explanationText').innerHTML = `
+                        El servidor SWI-Prolog recibió los parámetros y ejecutó el predicado <code>evaluar_compatibilidad/5</code>.
+                        Mediante resolución lógica y <code>findall/3</code> se recuperaron las respuestas resultantes de la unificación de datos para el área <strong>'${area}'</strong> y la habilidad <strong>'${habilidad}'</strong>.
+                    `;
+                })
+                .catch(err => {
+                    console.error("Error al conectar con SWI-Prolog:", err);
+                    document.getElementById('loader').classList.add('hidden');
+                    document.getElementById('noResults').classList.remove('hidden');
+                });
+        }
+    </script>
+</body>
+</html>
